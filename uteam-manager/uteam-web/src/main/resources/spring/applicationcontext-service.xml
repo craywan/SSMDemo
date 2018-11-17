@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+
+    <context:component-scan base-package="cn.lanshan.uteam.service"></context:component-scan>
+    <!--&lt;!&ndash; 引用ehCache 的配置&ndash;&gt;-->
+    <!--<bean id="cacheManager"-->
+          <!--class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">-->
+        <!--<property name="configLocation">-->
+            <!--<value>classpath:mybatis/ehcache.xml</value>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; 定义ehCache 的工厂，并设置所使用的Cache name &ndash;&gt;-->
+    <!--<bean id="simpleCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">-->
+        <!--<property name="cacheManager" ref="cacheManager" />-->
+        <!--&lt;!&ndash; 使用缓存 关联ehcache.xml中的缓存配置 &ndash;&gt;-->
+        <!--<property name="cacheName" >-->
+            <!--<value>mobileCache</value>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!-- find/create cache 拦截器-->
+    <!--<bean id="methodCacheInterceptor" class="cn.lanshan.uteam.intercptor.methodCacheInterceptor">-->
+        <!--<property name="cache" ref="simpleCache"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;&lt;!&ndash; flush cache 拦截器&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<bean id="methodCacheAfterAdvice" class="com.microcampus.ehcache.interceptor.MethodCacheAfterAdvice">&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="cache" ref="simpleCache"/>&ndash;&gt;-->
+    <!--&lt;!&ndash;</bean>&ndash;&gt;-->
+
+    <!--&lt;!&ndash; 参与缓存的切入点对象 (切入点对象，确定何时何地调用拦截器) &ndash;&gt;-->
+    <!--<bean id="methodCachePointCut"-->
+          <!--class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">-->
+        <!--&lt;!&ndash; 配置缓存aop切面 &ndash;&gt;-->
+        <!--<property name="advice" ref="methodCacheInterceptor" />-->
+        <!--&lt;!&ndash; 配置哪些方法参与缓存策略 .表示符合任何单一字元 ### +表示符合前一个字元一次或多次 ### *表示符合前一个字元零次或多次 ###-->
+            <!--\Escape任何Regular expression使用到的符号 .*表示前面的前缀(包括包名) 表示print方法 &ndash;&gt;-->
+        <!--&lt;!&ndash; 下面的配置就使得在数据访问时，cache将拦截从数据库获取的数据，与cache数据比较，如有就不放入cache，没有就放入，更新到数据库去，也是先存入cache，再更新到数据库中去 &ndash;&gt;-->
+        <!--<property name="patterns">-->
+            <!--<list>-->
+                <!--&lt;!&ndash; <value>com.microcampus.ehcache.rest.*RestService*\.*get.*</value>-->
+                    <!--<value>com.microcampus.ehcache.rest.*RestService*\.*search.*</value> &ndash;&gt;-->
+                <!--<value>.*select.*</value>-->
+                <!--<value>.*get.*</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;<bean id="methodCachePointCutAdvice"&ndash;&gt;-->
+    <!--&lt;!&ndash;class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="advice" ref="methodCacheAfterAdvice" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="patterns">&ndash;&gt;-->
+    <!--&lt;!&ndash;<list>&ndash;&gt;-->
+    <!--&lt;!&ndash;<value>.*create.*</value>&ndash;&gt;-->
+    <!--&lt;!&ndash;<value>.*update.*</value>&ndash;&gt;-->
+    <!--&lt;!&ndash;<value>.*delete.*</value>&ndash;&gt;-->
+    <!--&lt;!&ndash;</list>&ndash;&gt;-->
+    <!--&lt;!&ndash;</property>&ndash;&gt;-->
+    <!--&lt;!&ndash;</bean>&ndash;&gt;-->
+
+    <!--&lt;!&ndash; <bean id="personManager" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+        <!--<property name="target" value="personManagerTarget" />-->
+        <!--<property name="interceptorNames">-->
+            <!--<list>-->
+                <!--<value>methodCachePointCut</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>&ndash;&gt;-->
+
+
+
+
+</beans>
